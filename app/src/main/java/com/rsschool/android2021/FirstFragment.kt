@@ -1,25 +1,22 @@
 package com.rsschool.android2021
 
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
-class FirstFragment : Fragment() {
+class FirstFragment : Fragment(R.layout.fragment_first) {
+
+    interface GenerateClickListener {
+        fun onGenerateButtonClicked(min: Int, max: Int)
+    }
 
     private var generateButton: Button? = null
     private var previousResult: TextView? = null
+    private var generateClickListener: GenerateClickListener? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_first, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,14 +24,26 @@ class FirstFragment : Fragment() {
         generateButton = view.findViewById(R.id.generate)
 
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
-        previousResult?.text = "Previous result: ${result.toString()}"
+        previousResult?.text = getString(R.string.previous_result, result.toString())
 
-        // TODO: val min = ...
-        // TODO: val max = ...
+        val min = 0
+        val max = 255
 
         generateButton?.setOnClickListener {
-            // TODO: send min and max to the SecondFragment
+            generateClickListener?.onGenerateButtonClicked(min, max)
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is GenerateClickListener) {
+            generateClickListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        generateClickListener = null
     }
 
     companion object {
