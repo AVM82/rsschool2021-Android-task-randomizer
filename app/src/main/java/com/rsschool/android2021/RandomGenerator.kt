@@ -24,4 +24,12 @@ object RandomGenerator {
             else -> range
         }
     }
+
+    fun getRange(min: String, max: String): Range {
+        try {
+            return Range(min.toInt(), max.toInt())
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Wrong number format ${e.message}")
+        }
+    }
 }

@@ -16,16 +16,16 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
     private var backButton: Button? = null
     private var result: TextView? = null
     private var backButtonClickListener: BackButtonClickListener? = null
+    private var range: Range? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         result = view.findViewById(R.id.result)
         backButton = view.findViewById(R.id.back)
 
-        val min = arguments?.getInt(MIN_VALUE_KEY) ?: 0
-        val max = arguments?.getInt(MAX_VALUE_KEY) ?: 0
+        range = arguments?.getParcelable(RANGE) as Range?
 
-        result?.text = generate(min, max).toString()
+        result?.text = range?.let { generate(it).toString() }
 
         backButton?.setOnClickListener {
             backButtonClickListener?.onBackButtonClicked()
@@ -44,9 +44,8 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
         backButtonClickListener = null
     }
 
-    private fun generate(min: Int, max: Int): Int {
-        // TODO: generate random number
-        return 25
+    private fun generate(range: Range): Int {
+        return RandomGenerator.generate(range)
     }
 
     companion object {
@@ -55,12 +54,13 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
         fun newInstance(range: Range): SecondFragment {
             val fragment = SecondFragment()
             val args = Bundle()
-
-            //TODO: implement adding arguments
-
+            args.putParcelable(RANGE, range)
+//            args.putParcelable(MAX_VALUE_KEY, range)
+            fragment.arguments = args
             return fragment
         }
 
+        private const val RANGE = "MIN_VALUE"
         private const val MIN_VALUE_KEY = "MIN_VALUE"
         private const val MAX_VALUE_KEY = "MAX_VALUE"
     }

@@ -1,7 +1,6 @@
 package com.rsschool.android2021;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -37,8 +36,9 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.Gen
     @Override
     public void onGenerateButtonClicked(@NotNull String min, @NotNull String max) {
         try {
-            Range range = new Range(min, max);
-            openSecondFragment(RandomGenerator.INSTANCE.validateRange(range));
+            RandomGenerator randomGenerator = RandomGenerator.INSTANCE;
+            Range range = randomGenerator.getRange(min, max);
+            openSecondFragment(randomGenerator.validateRange(range));
         } catch (IllegalArgumentException e) {
             makeAlert(e.getMessage()).show();
         }
@@ -57,5 +57,4 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.Gen
     public void onBackButtonClicked() {
         getSupportFragmentManager().popBackStack();
     }
-
 }
