@@ -1,19 +1,25 @@
 package com.rsschool.android2021;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity implements FirstFragment.GenerateClickListener {
+import org.jetbrains.annotations.NotNull;
+
+public class MainActivity extends AppCompatActivity implements FirstFragment.GenerateButtonClickListener, SecondFragment.BackButtonClickListener {
+
+    private int previousNumber = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        openFirstFragment(0);
+        openFirstFragment(previousNumber);
     }
 
     private void openFirstFragment(int previousNumber) {
@@ -22,15 +28,34 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.Gen
         transaction.replace(R.id.container, firstFragment).commit();
     }
 
-    private void openSecondFragment(int min, int max) {
-        final Fragment secondFragment = SecondFragment.newInstance(min, max);
+    private void openSecondFragment(Range range) {
+        final Fragment secondFragment = SecondFragment.newInstance(range);
         final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.addToBackStack(null).replace(R.id.container, secondFragment).commit();
     }
 
     @Override
-    public void onGenerateButtonClicked(int min, int max) {
-        openSecondFragment(min, max);
-
+    public void onGenerateButtonClicked(@NotNull String min, @NotNull String max) {
+        try {
+            Range range = new Range(min, max);
+            openSecondFragment(RandomGenerator.INSTANCE.validateRange(range));
+        } catch (IllegalArgumentException e) {
+            makeAlert(e.getMessage()).show();
+        }
     }
+
+    private AlertDialog makeAlert(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.invalid_range_value)
+                .setMessage(message)
+                .setIcon(R.drawable.ic_baseline_warning_24)
+                .setPositiveButton("OK", (dialog, i) -> dialog.cancel());
+        return builder.create();
+    }
+
+    @Override
+    public void onBackButtonClicked() {
+        getSupportFragmentManager().popBackStack();
+    }
+
 }

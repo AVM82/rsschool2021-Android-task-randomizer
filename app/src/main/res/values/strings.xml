@@ -2,4 +2,7 @@
     <string name="app_name">randomizer</string>
     <string name="previous_result">Previous result: %1$s</string>
     <string name="eee">Previous result:</string>
+    <string name="min_not_specified">Minimum value not specified</string>
+    <string name="max_not_specified">Maximum value not specified</string>
+    <string name="invalid_range_value">Invalid range value</string>
 </resources>
