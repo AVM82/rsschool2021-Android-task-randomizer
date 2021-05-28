@@ -9,13 +9,14 @@ import androidx.fragment.app.Fragment
 
 class SecondFragment : Fragment(R.layout.fragment_second) {
 
-    interface BackButtonClickListener {
+    interface SecondFragmentListener {
         fun onBackButtonClicked()
+        fun passRandomNumber(num: Int)
     }
 
     private var backButton: Button? = null
     private var result: TextView? = null
-    private var backButtonClickListener: BackButtonClickListener? = null
+    private var secondFragmentListener: SecondFragmentListener? = null
     private var range: Range? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -23,25 +24,29 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
         result = view.findViewById(R.id.result)
         backButton = view.findViewById(R.id.back)
 
-        range = arguments?.getParcelable(RANGE) as Range?
+        range = arguments?.getParcelable(RANGE)
 
-        result?.text = range?.let { generate(it).toString() }
+        result?.text = range?.let {
+            val randomNum = generate(it)
+            secondFragmentListener?.passRandomNumber(randomNum)
+            randomNum.toString()
+        }
 
         backButton?.setOnClickListener {
-            backButtonClickListener?.onBackButtonClicked()
+            secondFragmentListener?.onBackButtonClicked()
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is BackButtonClickListener) {
-            backButtonClickListener = context
+        if (context is SecondFragmentListener) {
+            secondFragmentListener = context
         }
     }
 
     override fun onDetach() {
         super.onDetach()
-        backButtonClickListener = null
+        secondFragmentListener = null
     }
 
     private fun generate(range: Range): Int {
@@ -55,13 +60,10 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
             val fragment = SecondFragment()
             val args = Bundle()
             args.putParcelable(RANGE, range)
-//            args.putParcelable(MAX_VALUE_KEY, range)
             fragment.arguments = args
             return fragment
         }
 
         private const val RANGE = "MIN_VALUE"
-        private const val MIN_VALUE_KEY = "MIN_VALUE"
-        private const val MAX_VALUE_KEY = "MAX_VALUE"
     }
 }

@@ -6,6 +6,21 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/valid_range"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/max_value"
+        tools:text="The range of valid values is from 1 to 10" />
+
+    <TextView
         android:id="@+id/previous_result"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -22,7 +37,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:hint="Min"
+        android:hint="@string/min"
         android:inputType="number"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +48,7 @@
         android:id="@+id/max_value"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:hint="Max"
+        android:hint="@string/max"
         android:inputType="number"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,11 +59,11 @@
         android:id="@+id/generate"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Generate"
+        android:layout_marginTop="50dp"
+        android:text="@string/generate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/max_value" />
+        app:layout_constraintTop_toBottomOf="@+id/valid_range" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
