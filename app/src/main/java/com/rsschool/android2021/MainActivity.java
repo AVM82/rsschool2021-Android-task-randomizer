@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class MainActivity extends AppCompatActivity implements FirstFragment.FirstFragmentListener, SecondFragment.SecondFragmentListener {
 
     private int previousNumber = 0;
-    private RandomGenerator randomGenerator = RandomGenerator.INSTANCE;
+    private final RandomGenerator randomGenerator = RandomGenerator.INSTANCE;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.Fir
     @Override
     public void passRandomNumber(int num) {
         this.previousNumber = num;
-
     }
 
     @Override

@@ -36,8 +36,6 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
         validRangeText?.text =
             getString(R.string.valid_range, validRange?.min ?: 0, validRange?.max ?: 0)
 
-
-
         previousResult?.text = getString(
             R.string.previous_result,
             firstFragmentListener?.getPreviousResult().toString()
@@ -72,10 +70,6 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
         super.onResume()
         editTextMin?.text?.clear()
         editTextMax?.text?.clear()
-        previousResult?.text = getString(
-            R.string.previous_result,
-            firstFragmentListener?.getPreviousResult().toString()
-        )
     }
 
     override fun onDetach() {
